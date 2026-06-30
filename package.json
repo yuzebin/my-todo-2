@@ -1,0 +1,29 @@
+{
+  "name": "v0-project",
+  "version": "1.0.0",
+  "description": "my-todo 2 is the second demo project. Allow multiple users to register and log in, and manage their own to-do list.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuzebin/my-todo-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/yuzebin/my-todo-2/issues"
+  },
+  "homepage": "https://github.com/yuzebin/my-todo-2#readme",
+  "dependencies": {
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}
