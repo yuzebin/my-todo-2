@@ -4,7 +4,8 @@
 
 - Project name: `my-todo-2`
 - Source reviewed: `README.md`
-- Documentation status: initial standardized development specification
+- Technology constraints received: `TypeScript`, deployment on `Vercel`
+- Documentation status: standardized development specification with selected stack constraints
 - Confidence level: limited by repository contents; this document reflects confirmed requirements plus clearly marked recommendations
 
 ## 2. Confirmed Project Summary
@@ -97,24 +98,32 @@ The following model is a recommended starting point because the repository does 
 
 ## 8. Suggested Application Architecture
 
-Because no implementation exists yet, the architecture should stay simple and easy to maintain.
+Because no implementation exists yet, the architecture should stay simple, Vercel-friendly, and easy to maintain.
+
+### Recommended Implementation Direction
+
+- language: TypeScript
+- deployment target: Vercel
+- recommended application style: full-stack web application
+- recommended framework: Next.js with the App Router because it aligns naturally with TypeScript and Vercel deployment
+- recommended database access: ORM or query layer compatible with serverless deployment patterns
 
 ### Recommended Layers
 
-- presentation layer: web UI or HTTP API endpoints
-- application layer: business rules for authentication and task ownership
-- data layer: persistence for users and to-do items
+- presentation layer: Next.js pages, layouts, and client components where needed
+- application layer: server actions, route handlers, or service modules for authentication and task ownership
+- data layer: persistence for users and to-do items through a TypeScript database access layer
 
 ### Recommended Responsibilities
 
 - authentication module: registration, login, password hashing, session or token handling
 - authorization checks: verify resource ownership on every to-do operation
 - to-do module: task CRUD operations
-- persistence module: database access abstraction
+- persistence module: database access abstraction with TypeScript types shared across the app
 
 ## 9. API Planning Reference
 
-If this project is implemented as a web API, the following endpoints are a reasonable baseline.
+If this project is implemented with Next.js on Vercel, the following route handlers are a reasonable baseline.
 
 ### Authentication
 
@@ -146,7 +155,24 @@ If this project is implemented as a web API, the following endpoints are a reaso
 
 ## 11. Development Environment Standard
 
-No stack is currently defined in the repository. The implementation team should choose a stack and then update this section with concrete commands and tools.
+The project stack baseline is now defined as TypeScript with deployment on Vercel.
+
+### Selected Stack Constraints
+
+- primary language: TypeScript
+- hosting platform: Vercel
+- recommended framework: Next.js
+- recommended runtime target: Node.js LTS
+- recommended repository shape: single full-stack application repository
+
+### Recommended Tooling
+
+- framework: `next`
+- language tooling: `typescript`
+- linting: ESLint with TypeScript support
+- formatting: Prettier
+- testing: Vitest or Jest for unit tests, plus Playwright for end-to-end coverage if a web UI is implemented
+- environment management: `.env.local` for local development and Vercel environment variables for hosted environments
 
 ### Minimum Development Expectations
 
@@ -155,22 +181,34 @@ No stack is currently defined in the repository. The implementation team should 
 - reproducible local setup instructions
 - environment configuration through an example file such as `.env.example`
 - automated tests for key authentication and authorization paths
+- successful build output compatible with Vercel deployment
 
-### Required Future Additions
+### Standard Commands To Document
 
-Once implementation begins, document the following:
+Once implementation begins, document concrete commands for the following:
 
-- runtime and framework versions
-- installation steps
-- database setup
-- local development commands
-- build commands
-- test commands
-- lint and format commands
+- dependency installation
+- local development server
+- production build
+- local production preview
+- tests
+- linting
+- formatting
+
+### Example Command Set
+
+If Next.js is selected, the commands will likely look similar to:
+
+- `npm install`
+- `npm run dev`
+- `npm run build`
+- `npm run start`
+- `npm run lint`
+- `npm run test`
 
 ## 12. Coding Standards
 
-These are recommended standards until the repository adopts language-specific tooling.
+These are recommended standards for a TypeScript-based implementation.
 
 - keep modules small and focused
 - separate authentication logic from to-do business logic
@@ -178,6 +216,15 @@ These are recommended standards until the repository adopts language-specific to
 - use consistent naming conventions across code, routes, and database fields
 - prefer clear, testable functions over tightly coupled logic
 - document public interfaces and important design decisions
+- enable strict TypeScript settings where practical
+- share validated domain types between server and UI layers when possible
+
+### TypeScript Conventions
+
+- use explicit types for public function inputs and outputs
+- avoid `any` unless there is a documented exception
+- validate untrusted input at system boundaries
+- keep database models and API payload types distinct when their lifecycles differ
 
 ## 13. Testing Strategy
 
@@ -187,6 +234,7 @@ At minimum, the project should include:
 - integration tests for registration and login flows
 - integration tests proving one user cannot access another user's to-do items
 - CRUD tests for to-do lifecycle behavior
+- at least one deployment-ready build verification for Vercel compatibility
 
 ### Critical Test Cases
 
@@ -200,7 +248,25 @@ At minimum, the project should include:
 8. authenticated user can delete only their own to-do items
 9. unauthenticated access is rejected
 
-## 14. Documentation Standard
+## 14. Deployment Standard
+
+### Vercel Deployment Requirements
+
+- keep all required secrets in Vercel project environment variables
+- ensure database connectivity supports Vercel-hosted workloads
+- ensure server-side code avoids assumptions about long-lived local state
+- document environment variables for `development`, `preview`, and `production`
+- verify that authentication callbacks and base URLs are configured per environment
+
+### Recommended Deployment Flow
+
+1. push changes to the main repository
+2. connect the repository to Vercel
+3. configure environment variables
+4. validate preview deployments on pull requests
+5. promote to production after test and preview validation
+
+## 15. Documentation Standard
 
 The repository should ultimately contain the following documentation set:
 
@@ -210,32 +276,32 @@ The repository should ultimately contain the following documentation set:
 - `docs/api.md`: request and response contract details if an API is built
 - `docs/testing.md`: test strategy, commands, and environment notes
 
-## 15. Implementation Checklist
+## 16. Implementation Checklist
 
-- choose the application stack
 - define the database technology
-- create project structure
+- initialize the TypeScript project structure
+- choose and configure the framework, preferably Next.js for Vercel alignment
 - implement user registration
 - implement login and authentication handling
 - implement user-owned to-do CRUD
 - add validation and error handling
 - add automated tests
 - add local setup instructions
-- add deployment instructions
+- add Vercel deployment instructions
+- configure Vercel environment variables and preview deployments
 
-## 16. Risks And Open Questions
+## 17. Risks And Open Questions
 
 The current `README.md` does not answer the following questions:
 
-- which technology stack should be used
 - whether the app is frontend-only, backend-only, or full-stack
 - which database should store user and to-do data
 - whether authentication should use sessions, JWT, or another mechanism
-- whether the project requires deployment, containerization, or CI
+- whether CI should be added in addition to Vercel preview deployment
 - whether there are non-functional targets such as performance, accessibility, or localization
 
 These items should be resolved before implementation starts to avoid rework.
 
-## 17. Recommended Next Step
+## 18. Recommended Next Step
 
-Expand the repository from a concept-level `README.md` into an implementation-ready project by deciding the technology stack, persistence model, and authentication strategy, then update this document with concrete setup and execution details.
+Expand the repository from a concept-level `README.md` into an implementation-ready TypeScript project, choose the exact framework and database strategy, and prepare the app for Vercel preview and production deployment.
